@@ -1,1 +1,15 @@
-a = "hello world!"
+clc; close all; clear;
+counterflow = readmatrix('Renske/CounterFlow.txt','DecimalSeparator',',');
+counterheat = readmatrix('Renske/CounterHeat.txt','DecimalSeparator',',');
+countertemp = readmatrix('Renske/CounterTemp.txt','DecimalSeparator',',');
+eerstemetingflow = readmatrix('Renske/EersteMetingFlow.txt','DecimalSeparator',',');
+eerstemetingheat = readmatrix('Renske/EersteMetingHeat.txt','DecimalSeparator',',');
+eerstemetingtemp = readmatrix('Renske/EersteMetingTemp.txt','DecimalSeparator',',');
+heatinguprenske = readmatrix('Renske/HeatingUpRenske','DecimalSeparator',',');
+heatinguprenskenew = readmatrix('Renske/HeatingUpRenskeNew','DecimalSeparator',',');
+parallel = readmatrix('Renske/Parallel','DecimalSeparator',',');
+parallelflow = readmatrix('Renske/ParallelFlow.txt','DecimalSeparator',',');
+paralleltemp = readmatrix('Renske/ParallelHeat.txt','DecimalSeparator',',');
+parallelheat = readmatrix('Renske/ParallelTemp.txt','DecimalSeparator',',');
+warminguptweede = readmatrix('Renske/WarmingUpTWeede','DecimalSeparator',',');
+warminguptweedekeer = readmatrix('Renske/WarmingUpTweedeKeer.txt','DecimalSeparator',',');
