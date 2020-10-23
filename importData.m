@@ -13,3 +13,4 @@ paralleltemp = readmatrix('Renske/ParallelHeat.txt','DecimalSeparator',',');
 parallelheat = readmatrix('Renske/ParallelTemp.txt','DecimalSeparator',',');
 warminguptweede = readmatrix('Renske/WarmingUpTWeede','DecimalSeparator',',');
 warminguptweedekeer = readmatrix('Renske/WarmingUpTweedeKeer.txt','DecimalSeparator',',');
+save('data.mat');
