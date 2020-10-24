@@ -11,7 +11,7 @@ np = 10; % number of plates
 dt = 5; % time step, s
 tmax = length(parallelTemp)*dt; % end time, s
 v = wTot*df; % Fluid flow rate, m/s
-sigma = dl/v; % time constant
+sigma = l/v; % time constant
 cflow = dt/sigma; % constant for flow heat transport
 alpha = 25; % Convection coefficient, guesstimate
 lambda = 400; % Conduction coefficient of copper
@@ -21,9 +21,14 @@ N = 10;
 Tplate = zeros(length(parallelTemp),1);
 TH = zeros(length(parallelTemp),1);
 TC = zeros(length(parallelTemp),1);
-TinH = parallelTemp(:,3);
-TinC = parallelTemp(:
-for i = 1:length(parallelTemp)
-       
+TinH = parallelTemp(:,5);
+TinC = parallelTemp(:,3);
+ToutC = parallelTemp(:,2);
+ToutH = parallelTemp(:,4);
+TH(1) = (TinH(1)+ToutH(1))/2;
+TC(1) = (TinC(1)+ToutC(1))/2;
+Tplate(1) = (TH(1)+TC(1))/2;
+for i = 1:length(parallelTemp)-1
+    TH(i+1) = TH(i) -alpha*Atot/m/cp*(TH(i)-Tplate(i))+(TinH(i)-TH(i))/sigma-(TH(i)-ToutH(i))/sigma;
     
 end
