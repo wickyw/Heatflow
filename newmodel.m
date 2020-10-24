@@ -1,6 +1,6 @@
 clc; close all; clear;
 load("processedData.mat");
-N=10;
+N=20;
 Tplate = zeros(length(parallelTemp),100,N);
 TH = zeros(length(parallelTemp),100,N);
 TC = zeros(length(parallelTemp),100,N);
@@ -26,6 +26,11 @@ plot(Tplate(:,1,1));
 plot(TC(:,1,1));
 plot(TH(:,1,1));
 hold off;
+figure;
+hold on;
+plot(Tplate(:,1,N));
+plot(TC(:,1,N));
+plot(TH(:,1,N));
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
 Atot = 0.12; % Total area, m²
@@ -36,7 +41,7 @@ l = 0.191; % length of panel, m
 w = 0.073; % width of panel, m
 wTot = 10*w;
 dt = 5; % time step, s
-N = 10;
+N = 20;
 alpha = 1000; % Convection coefficient, guesstimate
 rho = 1e3; % Density of water, kg/m³
 rhocopper = 8960; % Density of copper, kg/m³
@@ -56,9 +61,9 @@ mppart = mp/N;
 % newTplate = Tplate+ (alpha*Atot/mp/cpc*(TH-2*Tplate+TC))*dt/100;
 % newTC = TC + (-alpha*Atot/mc/cp*(TC-Tplate)+mc*cp/sigma*(TinC+ToutC-2*TC))*dt/100;
 newTH(1) = TH(1) +(-alpha*Apart/mhpart/cp*(TH(1)-Tplate(1))+(TinH-TH(1))/sigma)*dt/100;
-newTH(N) = TH(N) +(-alpha*Apart/mhpart/cp*(TH(1)-Tplate(1))+(ToutH-TH(1))/sigma)*dt/100;
+newTH(N) = TH(N) +(-alpha*Apart/mhpart/cp*(TH(N)-Tplate(N))+(ToutH-TH(N))/sigma)*dt/100;
 newTC(1) = TC(1) +(-alpha*Apart/mcpart/cp*(TC(1)-Tplate(1))+(TinC-TC(1))/sigma)*dt/100;
-newTC(N) = TC(N) +(-alpha*Apart/mcpart/cp*(TC(1)-Tplate(1))+(ToutC-TC(1))/sigma)*dt/100;
+newTC(N) = TC(N) +(-alpha*Apart/mcpart/cp*(TC(N)-Tplate(N))+(ToutC-TC(N))/sigma)*dt/100;
 newTplate(1) = Tplate(1) + (alpha*Apart/mppart/cpc*(TH(1)-2*Tplate(1)+TC(1))- lambda*dp*wTot/l*N*(Tplate(1)-Tplate(2)))*dt/100;
 newTplate(N) = Tplate(N) + (alpha*Apart/mppart/cpc*(TH(N)-2*Tplate(N)+TC(N))- lambda*dp*wTot/l*N*(Tplate(N)-Tplate(N-1)))*dt/100;
 for i = 2:N-1
