@@ -6,7 +6,7 @@ load("processedData.mat");
 A = 0.012; % Area per plate, m²
 Atot = 0.12; % Total area, m²
 V = 0.018e-3; % Volume per plate, m³
-Vtot = 0.18e03; % Total volume, m³
+Vtot = 0.18e-03; % Total volume, m³
 dp = 0.26e-3; % Thickness of conductive panel, m
 df = 2.1e-3; % Distance between panels
 l = 0.191; % length of panel, m
