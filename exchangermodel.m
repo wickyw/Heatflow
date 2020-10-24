@@ -16,3 +16,18 @@ N = 100; % number of model segments per plate
 dl = l/N; % length of model segment
 dt = 5; % time step, s
 tmax = 100; % end time, s
+v = 0; % Fluid flow rate, m/s
+
+%% Model data arrays initialisation:
+Tmodel = zeros(tmax/dt,np,N);
+for i = 1:tmax/dt
+    for j = 1:np
+        for k = 1:N
+            % First, convective heat transport through the fluid:
+            
+            
+            
+            
+        end
+    end
+end
