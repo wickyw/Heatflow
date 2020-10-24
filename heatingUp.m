@@ -38,10 +38,10 @@ ylabel(['temperature [', char(176), 'C]']);
 title('Water heating up in the water tank, T1');
 
 figure;
-plot(heatingUpData);
+plot(heatingUpData(160:totalTime));
 hold on;
-plot(tempWater);
-plot(tempWater2);
+plot(tempWater(160:totalTime));
+plot(tempWater2(160:totalTime));
 xlabel('time [s]')
 ylabel(['temperature [', char(176), 'C]']);
-legend('measurement data', 'first model');
+legend('measurement data', 'no loss', 'loss to environment');
