@@ -9,8 +9,8 @@ TinC = parallelTemp(:,4);
 ToutC = parallelTemp(:,5);
 ToutH = parallelTemp(:,3);
 for i = 1:N
-TH(1,i,:) = TinH(1)+(0:N-1)*(TinH(1)-ToutH(1))/N;
-TC(1,i,:) = TinC(1)+(0:N-1).*(TinC(1)-ToutC(1))/N;
+    TH(1,:,i) = TinH(1)+i*(ToutH(1)-TinH(1))/N;
+    TC(1,:,i) = TinC(1)+i*(ToutC(1)-TinC(1))/N;
 end
 Tplate(1,:,:) = TC(1,:,:);
 for i = 1:length(parallelTemp)-1
@@ -23,8 +23,9 @@ end
 figure;
 hold on;
 plot(Tplate(:,1,1));
-plot(TC(:,1,1,1));
-plot(TH(:,1,1,1));
+plot(TC(:,1,1));
+plot(TH(:,1,1));
+hold off;
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
 Atot = 0.12; % Total area, m²
@@ -36,7 +37,7 @@ w = 0.073; % width of panel, m
 wTot = 10*w;
 dt = 5; % time step, s
 N = 10;
-alpha = 30; % Convection coefficient, guesstimate
+alpha = 1000; % Convection coefficient, guesstimate
 rho = 1e3; % Density of water, kg/m³
 rhocopper = 8960; % Density of copper, kg/m³
 cp = 4.2e3; % Water cp, J/kg/K
