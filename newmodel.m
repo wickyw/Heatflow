@@ -10,7 +10,7 @@ wTot = 10*w;
 np = 10; % number of plates
 dt = 5; % time step, s
 tmax = length(parallelTemp)*dt; % end time, s
-alpha = 10; % Convection coefficient, guesstimate
+alpha = 100; % Convection coefficient, guesstimate
 lambda = 400; % Conduction coefficient of copper
 rho = 1e3; % Density of water, kg/m³
 cp = 4.2e3; % Water cp, J/kg/K
@@ -41,4 +41,8 @@ for i = 1:length(parallelTemp)-1
     Tplate(i+1,1) = Tplate(i,100) +(alpha*Atot/mp/cpc*(TH(i,100)-2*Tplate(i,100)+TC(i,100)))*dt/100;
     TC(i+1,1) = TC(i,100) +(-alpha*Atot/mc/cp*(TC(i,100)-Tplate(i,100))+mc*cp/sigma*(TinC(i)+ToutC(i)-2*TC(i,100)))*dt/100;
 end
-plot(Tplate(:,100));
+figure;
+hold on;
+plot(mean(Tplate,2));
+plot(mean(TC,2));
+plot(mean(TH,2));
