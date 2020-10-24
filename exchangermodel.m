@@ -12,7 +12,7 @@ df = 2.1e-3; % Distance between panels
 l = 0.191; % length of panel, m
 w = 0.073; % width of panel, m
 np = 10; % number of plates
-N = 100; % number of model segments per plate
+N = 10; % number of model segments per plate
 dl = l/N; % length of model segment
 dt = 5; % time step, s
 tmax = length(parallelTemp)*dt; % end time, s
@@ -27,30 +27,30 @@ mWaterSegment = V*rho;
 cp = 4.2e3; % Water cp, J/kg/K
 
 %% Model data arrays initialisation:
-Tmodel = zeros(tmax/dt,2*np-1,N);
+Tmodel = zeros(tmax/dt,np+1,N);
 Tin = zeros(length(parallelTemp),2*np-1);
-for i = 1:2:2*np-1
+for i = 1:2:np+1
     Tin(:,i) = parallelTemp(:,3);
     Tmodel(1,:,1:N/2) = parallelTemp(1,3);
     Tmodel(1,:,(N/2+1):N) = parallelTemp(1,2);
 end
-for i = 2:2:2*np-1
+for i = 2:2:np+1
     Tin(:,i) = parallelTemp(:,5);
     Tmodel(1,:,1:N/2) = parallelTemp(1,5);
     Tmodel(1,:,(N/2+1):N) = parallelTemp(1,4);
 end
-dTflow = zeros(1,2*np-1,N);
-dTplate = zeros(1,2*np-1,N); % Temperature change through interaction through plate
+dTflow = zeros(1,np+1,N);
+dTplate = zeros(1,np+1,N); % Temperature change through interaction through plate
 for i = 1:tmax/dt-1
     dTplate(1,1,1:N) = -(Tmodel(i,1,1:N)-Tmodel(i,2,1:N))/Rth*dt;
-    for j = 2:2*np-2
+    for j = 2:np
         % First, convective heat transport through the fluid:
         dTflow(1,j,1) = cflow*(Tin(i,j)-Tmodel(i,j,1));
         dTflow(1,j,2:N) = cflow*(Tmodel(i,j,1:N-1)-Tmodel(i,j,2:N));
         % Second, through-plate heat transport
         dTplate(1,j,1:N) = -(2*Tmodel(i,j,1:N)-Tmodel(i,j+1,1:N)-Tmodel(i,j-1,1:N))/Rth*dt;
     end
-    dTplate(1,2*np-1,N) = -(Tmodel(i,j,N)-Tmodel(i,j-1,N))/Rth*dt/mWaterSegment/cp;
+    dTplate(1,np+1,N) = -(Tmodel(i,j,N)-Tmodel(i,j-1,N))/Rth*dt/mWaterSegment/cp;
     dT = dTflow + dTplate;
     Tmodel(i+1,:,:) = Tmodel(i,:,:) + dT;
 end
