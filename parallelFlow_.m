@@ -1,6 +1,6 @@
 clc; close all; clear;
 load("processedData.mat");
-N=50;
+N=80;
 Tplate = zeros(length(parallelTemp)-100,100,N);
 TH = zeros(length(parallelTemp)-100,100,N);
 TC = zeros(length(parallelTemp)-100,100,N);
@@ -44,7 +44,7 @@ l = 0.191; % length of panel, m
 w = 0.073; % width of panel, m
 wTot = 10*w;
 dt = 1; % time step, s
-N = 50;
+N = 80;
 alpha = 150; % Convection coefficient, guesstimate
 rho = 1e3; % Density of water, kg/m³
 rhocopper = 8960; % Density of copper, kg/m³
