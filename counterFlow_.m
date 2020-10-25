@@ -1,6 +1,6 @@
 clc; close all; clear;
 load("processedData.mat");
-N=50;
+N=99;
 dt=1;
 counterTemp_ = counterTemp;
 Tplate = zeros(length(counterTemp)-100/dt,100,N);
@@ -10,6 +10,11 @@ TinH = counterTemp(:,2);
 TinC = counterTemp(:,5);
 ToutC = counterTemp(:,4);
 ToutH = counterTemp(:,3);
+Ttank(1) = parallelTemp(100, 1);
+amountWater = 0.01; %L/s
+WaterDt = amountWater*dt;
+WaterRho = 0.997; %kg/L
+massWaterDt = WaterDt*WaterRho;
 for i = 1:N
     TH(1,:,i) = TinH(100)+i*(ToutH(100)-TinH(100))/N;
     TC(1,:,N+1-i) = TinC(100)+i*(ToutC(100)-TinC(100))/N;
@@ -20,6 +25,7 @@ for i = 1:length(counterTemp)/dt-101
     for j = 1:99
         [TH(i+1,j+1,:),Tplate(i+1,j+1,:),TC(i+1,j+1,:)] = newTemp(TH(i,j,:),Tplate(i,j,:),TC(i,j,:),TinH(i+100),ToutH(i+100),TinC(i+100),ToutC(i+100));
     end
+    Ttank(i+1) = (Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 100, N)*WaterRho*WaterDt))/(WaterRho*10);
 end
 %dt = 1;
 time = linspace(100, length(counterTemp)/dt, length(counterTemp)-100);
@@ -35,6 +41,7 @@ plot(counterTemp_, 'g');
 % plot(Tplate(:,1,N));
 plot(time, TC(:,1,N), 'b');
 plot(time, TH(:,1,N), 'k');
+plot(time,Ttank);
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
 Atot = 0.12; % Total area, m²
@@ -45,7 +52,7 @@ l = 0.191; % length of panel, m
 w = 0.073; % width of panel, m
 wTot = 10*w;
 dt = 1; % time step, s
-N = 50;
+N = 99;
 alpha = 150; % Convection coefficient, guesstimate
 rho = 1e3; % Density of water, kg/m³
 rhocopper = 8960; % Density of copper, kg/m³
