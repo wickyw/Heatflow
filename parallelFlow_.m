@@ -83,8 +83,8 @@ newTC(N) = TC(N) +(-alpha*Apart/mcpart/cp*(TC(N)-Tplate(N))+(ToutC-TC(N))/sigma)
 newTplate(1) = Tplate(1) + (alpha*Apart/mppart/cpc*(TH(1)-2*Tplate(1)+TC(1))- lambda*dp*wTot/l*N*(Tplate(1)-Tplate(2)))*dt/100;
 newTplate(N) = Tplate(N) + (alpha*Apart/mppart/cpc*(TH(N)-2*Tplate(N)+TC(N))- lambda*dp*wTot/l*N*(Tplate(N)-Tplate(N-1)))*dt/100;
 for i = 2:N-1
-    newTH(i) = TH(i) + (-alpha*Apart/mhpart/cp*(TH(i)-Tplate(i))+(TH(i-1)+TH(i+1)-2*TH(i))/sigma)*dt/100;
-    newTC(i) = TC(i) + (-alpha*Apart/mcpart/cp*(TC(i)-Tplate(i))+(TC(i-1)+TC(i+1)-2*TC(i))/sigma)*dt/100;
+    newTH(i) = TH(i) + (-alpha*Apart/mhpart/cp*(TH(i)-Tplate(i))+(TH(i-1)-TH(i))/sigma)*dt/100;
+    newTC(i) = TC(i) + (-alpha*Apart/mcpart/cp*(TC(i)-Tplate(i))+(TC(i-1)-TC(i))/sigma)*dt/100;
     newTplate(i) = Tplate(i) + (alpha*Apart/mppart/cpc*(TH(i)-2*Tplate(i)+TC(i))- lambda*dp*wTot/l*N*(2*Tplate(i)-Tplate(i-1)-Tplate(i+1)))*dt/100;
 end
 end
