@@ -7,8 +7,8 @@ Tplate = zeros(length(counterTemp)-100/dt,100,N);
 TH = zeros(length(counterTemp)-100/dt,100,N);
 TC = zeros(length(counterTemp)-100/dt,100,N);
 TinH = counterTemp(:,2);
-TinC = counterTemp(:,4);
-ToutC = counterTemp(:,5);
+TinC = counterTemp(:,5);
+ToutC = counterTemp(:,4);
 ToutH = counterTemp(:,3);
 for i = 1:N
     TH(1,:,i) = TinH(100)+i*(ToutH(100)-TinH(100))/N;
@@ -20,7 +20,6 @@ for i = 1:length(counterTemp)/dt-101
     for j = 1:99
         [TH(i+1,j+1,:),Tplate(i+1,j+1,:),TC(i+1,j+1,:)] = newTemp(TH(i,j,:),Tplate(i,j,:),TC(i,j,:),TinH(i+100),ToutH(i+100),TinC(i+100),ToutC(i+100));
     end
-    TC(i+1, 1, :);
 end
 %dt = 1;
 time = linspace(100, length(counterTemp)/dt, length(counterTemp)-100);

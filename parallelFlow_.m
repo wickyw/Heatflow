@@ -5,7 +5,7 @@ dt =1;
 Tplate = zeros((length(parallelTemp)-100)/dt,100,N);
 TH = zeros((length(parallelTemp)-100)/dt,100,N);
 TC = zeros((length(parallelTemp)-100)/dt,100,N);
-Ttank = zeros((length(parallelTemp)-100)/dt);
+Ttank = zeros((length(parallelTemp)-100)/dt,1);
 
 TinH = parallelTemp(:,2);
 TinC = parallelTemp(:,4);
@@ -26,7 +26,7 @@ for i = 1:(length(parallelTemp)-101)/dt
     for j = 1:99
         [TH(i+1,j+1,:),Tplate(i+1,j+1,:),TC(i+1,j+1,:)] = newTemp(TH(i,j,:),Tplate(i,j,:),TC(i,j,:),TinH(i+100),ToutH(i+100),TinC(i+100),ToutC(i+100));
     end
-    (Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 1, N)*WaterRho*WaterDt))/(WaterRho*10)
+    %(Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 1, N)*WaterRho*WaterDt))/(WaterRho*10);
     Ttank(i+1) = (Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 100, N)*WaterRho*WaterDt))/(WaterRho*10);
 end
 figure;
@@ -43,6 +43,8 @@ plot(parallelTemp, 'g');
 plot(time, TC(:,1,N));
 plot(time, TH(:,1,N));
 plot(time, Ttank);
+legend(['TC','TH','parallelTemp'+string(1:5),'TC','TH','Ttank']);
+hold off;
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
 Atot = 0.12; % Total area, m²
