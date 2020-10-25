@@ -35,15 +35,17 @@ hold on;
 % plot(Tplate(:,1,1));
 plot(time, TC(:,1,1));
 plot(time, TH(:,1,1));
-plot(parallelTemp, 'g');
+plot(parallelTemp);
 % hold off;
 % figure;
 % hold on;
 % plot(Tplate(:,1,N));
 plot(time, TC(:,1,N));
 plot(time, TH(:,1,N));
-plot(time, Ttank);
-legend(['TC','TH','parallelTemp'+string(1:5),'TC','TH','Ttank']);
+%plot(time, Ttank);
+legend(['TC(1)','TH(1)','parallelTemp'+string(1:5),'TC(N)','TH(N)','Ttank']);
+xlabel('time(s)');
+ylabel('Temperature (C)');
 hold off;
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
