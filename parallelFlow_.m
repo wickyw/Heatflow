@@ -1,28 +1,36 @@
 clc; close all; clear;
 load("processedData.mat");
-N=80;
-Tplate = zeros(length(parallelTemp)-100,100,N);
-TH = zeros(length(parallelTemp)-100,100,N);
-TC = zeros(length(parallelTemp)-100,100,N);
+N=99;
+dt =1;
+Tplate = zeros((length(parallelTemp)-100)/dt,100,N);
+TH = zeros((length(parallelTemp)-100)/dt,100,N);
+TC = zeros((length(parallelTemp)-100)/dt,100,N);
+Ttank = zeros((length(parallelTemp)-100)/dt);
+
 TinH = parallelTemp(:,2);
 TinC = parallelTemp(:,4);
 ToutC = parallelTemp(:,5);
 ToutH = parallelTemp(:,3);
+Ttank(1) = parallelTemp(100, 1);
+amountWater = 0.01; %L/s
+WaterDt = amountWater*dt;
+WaterRho = 0.997; %kg/L
+massWaterDt = WaterDt*WaterRho;
 for i = 1:N
     TH(1,:,i) = TinH(100)+i*(ToutH(100)-TinH(100))/N;
     TC(1,:,i) = TinC(100)+i*(ToutC(100)-TinC(100))/N;
 end
 Tplate(1,:,:) = TC(1,:,:);
-for i = 1:length(parallelTemp)-101
-    [TH(i+1,1,:),Tplate(i+1,1,:),TC(i+1,1,:)] = newTemp(TH(i,100,:),Tplate(i,100,:),TC(i,100,:),TinH(i+100),ToutH(+100),TinC(i+100),ToutC(i+100));
+for i = 1:(length(parallelTemp)-101)/dt
+    [TH(i+1,1,:),Tplate(i+1,1,:),TC(i+1,1,:)] = newTemp(TH(i,100,:),Tplate(i,100,:),TC(i,100,:),TinH(i+100),ToutH(i+100),TinC(i+100),ToutC(i+100));
     for j = 1:99
         [TH(i+1,j+1,:),Tplate(i+1,j+1,:),TC(i+1,j+1,:)] = newTemp(TH(i,j,:),Tplate(i,j,:),TC(i,j,:),TinH(i+100),ToutH(i+100),TinC(i+100),ToutC(i+100));
     end
-    
+    (Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 1, N)*WaterRho*WaterDt))/(WaterRho*10)
+    Ttank(i+1) = (Ttank(i)*WaterRho*(10-WaterDt)+(TH(i+1, 100, N)*WaterRho*WaterDt))/(WaterRho*10);
 end
 figure;
-dt=1;
-time = linspace(100, length(parallelTemp)/dt, length(parallelTemp)-100);
+time = linspace(100, length(parallelTemp), (length(parallelTemp)-100)/dt);
 hold on;
 % plot(Tplate(:,1,1));
 plot(time, TC(:,1,1));
@@ -34,6 +42,7 @@ plot(parallelTemp, 'g');
 % plot(Tplate(:,1,N));
 plot(time, TC(:,1,N));
 plot(time, TH(:,1,N));
+plot(time, Ttank);
 function [newTH,newTplate,newTC] = newTemp(TH,Tplate,TC,TinH,ToutH,TinC,ToutC)
 
 Atot = 0.12; % Total area, m²
@@ -44,7 +53,7 @@ l = 0.191; % length of panel, m
 w = 0.073; % width of panel, m
 wTot = 10*w;
 dt = 1; % time step, s
-N = 80;
+N = 99;
 alpha = 150; % Convection coefficient, guesstimate
 rho = 1e3; % Density of water, kg/m³
 rhocopper = 8960; % Density of copper, kg/m³
